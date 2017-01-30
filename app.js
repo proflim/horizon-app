@@ -1,13 +1,15 @@
+var program = require('commander');
 var args = process.argv;
 var flagsPresent = [];
 
-args.forEach(function(item){
-  if(item === '--sum' || item === '--product')
-    flagsPresent.push(item);
+program
+  .option('-s, --sum', 'sum')
+  .option('-p, --product', 'product')
+  .parse(process.argv);
 
-});
 
-if(flagsPresent.length!==1){
+if(!program.sum && !program.product){
+  //TO DO: remove after replacing with commander version
   throw 'error: incorrect number of flags';
 }
 
@@ -18,11 +20,11 @@ var isNumber = function(x){
 var numbers = args.filter(isNumber).map(parseFloat);
 var result;
 
-if(flagsPresent[0] === '--sum'){
+if(program.sum){
   result = numbers.reduce(function(a,b){ return a + b});
 }
 
-else if(flagsPresent[0] === '--product'){
+else if(program.product){
   result = numbers.reduce(function(a,b){ return a * b});
 }
 
